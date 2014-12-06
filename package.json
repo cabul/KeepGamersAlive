@@ -1,0 +1,29 @@
+{
+  "name": "KeepGamersHappy",
+  "author": "cabul",
+  "version": "0.0.1",
+  "main": "./src/main.js",
+  "browserify-shim": {
+    "tween": "global:TWEEN",
+    "pixi": "global:PIXI"
+  },
+  "browserify": {
+    "transform": [ "browserify-shim" ]
+  },
+  "watchify": {
+    "transform": [ "browserify-shim" ]
+  },
+  "scripts": {
+    "build": "browserify . -o ./bin/bundle.js -d",
+    "watch": "watchify . -o ./bin/bundle.js -v -d",
+    "server": "http-server"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "browserify": "*",
+    "watchify": "*",
+    "browserify-shim": "*",
+    "http-server": "*"
+  }
+}
