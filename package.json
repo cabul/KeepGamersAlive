@@ -1,11 +1,12 @@
 {
-  "name": "KeepGamersHappy",
+  "name": "KeepGamersAlive",
   "author": "cabul",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "./src/main.js",
   "browserify-shim": {
     "tween": "global:TWEEN",
-    "pixi": "global:PIXI"
+    "pixi": "global:PIXI",
+    "gui": "global:dat.GUI"
   },
   "browserify": {
     "transform": [ "browserify-shim" ]
