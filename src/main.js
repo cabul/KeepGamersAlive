@@ -1,107 +1,32 @@
-var tween = require('tween');
 var pixi = require('pixi');
-var Gui = require('gui');
 
-var gui = new Gui();
-
-var stage = new pixi.Stage(0x66FF99);
 var renderer = pixi.autoDetectRenderer( 800,600 );
 document.body.appendChild(renderer.view);
 
-var background = pixi.Sprite.fromImage('img/background.png');
+var game = require('./game');
 
-background.anchor.x = 0;
-background.anchor.y = 0;
-background.position.x = 0;
-background.position.y = 0;
+var init_time = 0;
 
-// var pixelateFilter = new pixi.PixelateFilter();
-// var pixelateFolder = gui.addFolder('Pixelate');
-// pixelateFolder.add(pixelateFilter.size,'x',1,32).name('PixelSizeX');
-// pixelateFolder.add(pixelateFilter.size,'y',1,32).name('PixelSizeY');
-//
-// var container = new pixi.DisplayObjectContainer();
-// container.filters = [ pixelateFilter ];
-//
-// container.addChild(background);
-// stage.addChild(container);
+var running = true;
 
-stage.addChild(background);
-
-var leftArm = pixi.Sprite.fromImage('img/left_arm.png');
-leftArm.anchor.x = 0.5;
-leftArm.anchor.y = 1;
-
-var rightArm = pixi.Sprite.fromImage('img/right_arm.png');
-rightArm.anchor.x = 0.5;
-rightArm.anchor.y = 1;
-
-var rotation = {
-  left: 0,
-  right: 0
+var context = {
+  renderer: renderer,
+  quit: function(){
+    running = false;
+  }
 };
 
-var Animation = require('./animation');
+game.oninit(context);
 
-var leftSheet = Animation.loadAll(leftArm,require('./animations/leftarm'));
-var rightSheet = Animation.loadAll(rightArm,require('./animations/rightarm'));
+requestAnimFrame( function render(tick){
 
-var leftAnim = Animation.link([
-  leftSheet.typing.clone().repeat(4),
-  leftSheet.rest
-]).jumpTo(0).play({loop: true});
+  if(running){
+    requestAnimFrame(render);
+    tick = tick || init_time;
+    var dt = tick - init_time;
+    init_time = tick;
 
-var rightAnim = Animation.link([
-  rightSheet.typing.clone().repeat(2),
-  rightSheet.mouse,
-  rightSheet.typing
-]).jumpTo(0).play({loop:true});
-
-var doAnimate = { left: true, right: true };
-
-var armFolder = gui.addFolder('Left Arm');
-var option;
-armFolder.add(leftArm.position,'x',-200,1000).name('Position X');
-armFolder.add(leftArm.position,'y',-200,1000).name('Position Y');
-option = armFolder.add(rotation,'right',0,360).name('Rotation');
-option.onChange(function(value){
-  leftArm.rotation = value * Math.PI / 180;
-});
-option = armFolder.add(doAnimate,'left').name('Animate');
-option.onChange(function(value){
-  if( value ) {
-    leftAnim.play({transition: 200});
-  } else {
-    leftAnim.pause();
+    game.onframe(tick,dt);
   }
-});
-
-armFolder = gui.addFolder('Right Arm');
-armFolder.add(rightArm.position,'x',-200,1000).name('Position X');
-armFolder.add(rightArm.position,'y',-200,1000).name('Position Y');
-armFolder.add(rotation,'right',0,360).name('Rotation');
-option = armFolder.add(rotation,'left',0,360).name('Rotation');
-option.onChange(function(value){
-  rightArm.rotation = value * Math.PI / 180;
-});
-option = armFolder.add(doAnimate,'right').name('Animate');
-option.onChange(function(value){
-  if( value ) {
-    rightAnim.play({transition: 200});
-  } else {
-    rightAnim.pause();
-  }
-});
-
-
-stage.addChild( leftArm );
-stage.addChild( rightArm );
-
-requestAnimFrame( function render(){
-
-  requestAnimFrame(render);
-
-  renderer.render(stage);
-  tween.update();
 
 });
