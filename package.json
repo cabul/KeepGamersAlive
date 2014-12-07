@@ -1,7 +1,7 @@
 {
   "name": "KeepGamersAlive",
   "author": "cabul",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "main": "./src/main.js",
   "browserify-shim": {
     "tween": "global:TWEEN",

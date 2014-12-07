@@ -13,6 +13,8 @@ var Animation = function(sprite,frames){
     sprite.position.y = this.posy;
     sprite.rotation = this.rot;
   };
+  this.cursor = 0;
+  this.loop = false;
 
 };
 
@@ -28,18 +30,21 @@ Animation.prototype = {
 
   constructor: Animation,
   build: function(options){
-    options = options || {};
+    options = options || {};
+    this.loop = options.loop || this.loop;
+    this.cursor = options.cursor || this.cursor;
     var frames = this.frames;
     var len = frames.length;
-    var doLoop = options.loop || false;
-    options.offset = options.offset || 0;
-    var i = options.offset;
-    var trans = options.transition;
-    var onframe = options.onframe || function(){};
+    var doLoop = this.loop;
+    var offset = this.cursor;
+    var i = offset;
+    var onframe = this.onframe;
 
     var last, first, tween, frame;
 
     var max = i + len;
+
+    var _this = this;
 
     var complete = function(f){
       var form = format(frames[f]);
@@ -47,14 +52,19 @@ Animation.prototype = {
         this.posx = form.posx;
         this.posy = form.posy;
         this.rot = form.rot;
-        onframe.call(frames,f);
+        if(_this.onframe) {
+          onframe.call(frames,f);
+        }
+        _this.cursor = (f+1) % len;
       };
     };
+
 
     while( i < max) {
       frame = frames[i%len];
       tween = new Tween(format(frame));
       var oncomplete = complete(i%len);
+      var onstop = stop(i%len);
       i = i + 1;
       var next = frames[i%len];
       tween.to(format(next),next.duration||1000)
@@ -74,22 +84,41 @@ Animation.prototype = {
       last.chain(first);
     }
 
-    if( !!trans ) {
-      frame = frames[ options.offset % len ];
+    this.tween = first;
+
+    return this;
+  },
+  play: function(options){
+    options = options || {};
+    this.build(options);
+    var first = this.tween;
+    var time = options.transition;
+    if( time ) {
+      dt = dt || 0;
+      var frame = this.frames[ this.cursor % this.frames.length ];
       var status = this.spriteStatus();
-      tween = new Tween(format(status));
-      tween.to(format(frame),trans.duration||1000)
-      .delay(trans.delay||0)
+      var _this = this;
+      this.tween = new Tween(format(status))
+      .to(format(frame),time)
+      .delay(options.delay||0)
       .easing(curve)
       .onUpdate(this.update)
       .onComplete(function(){
+        _this.tween = first;
         first.start();
-      });
+      }).onStop(function(){
+        _this.tween = first;
+      }).start();
     } else {
-      tween = first;
+      first.start();
     }
-
-    return tween;
+    return this;
+  },
+  pause: function(){
+    this.tween.stop();
+    this.tween.stopChainedTweens();
+    this.cursor = (this.cursor+1)%this.frames.length;
+    return this;
   },
   spriteStatus: function(){
     return {
@@ -97,14 +126,19 @@ Animation.prototype = {
       rotation: this.sprite.rotation * rtod
     };
   },
+  onFrame: function(cb){
+    this.onframe = cb;
+    return this;
+  },
   jumpTo: function(i){
     i = i || 0;
     var frame = this.frames[i];
+    this.cursor = (i+1) % this.frames.length;
     var sprite = this.sprite;
     sprite.position.x = frame.position.x;
     sprite.position.y = frame.position.y;
     sprite.rotation = frame.rotation * dtor;
-    return frame;
+    return this;
   },
   repeat: function(times){
     var frames = [].concat(this.frames);
