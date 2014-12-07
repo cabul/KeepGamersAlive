@@ -1,7 +1,7 @@
 {
   "name": "KeepGamersAlive",
   "author": "cabul",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "main": "./src/main.js",
   "browserify-shim": {
     "tween": "global:TWEEN",
@@ -9,7 +9,7 @@
     "gui": "global:dat.GUI"
   },
   "browserify": {
-    "transform": [ "browserify-shim" ],
+    "transform": [ "browserify-shim", "uglifyify" ],
     "paths": ["./node_modules","./src"]
   },
   "watchify": {
@@ -18,14 +18,16 @@
   "scripts": {
     "build": "browserify . -o ./bin/bundle.js -d",
     "watch": "watchify . -o ./bin/bundle.js -v -d",
-    "server": "http-server"
+    "start": "http-server"
   },
   "dependencies": {
+    "http-server": "latest"
   },
   "devDependencies": {
-    "browserify": "*",
-    "watchify": "*",
-    "browserify-shim": "*",
-    "http-server": "*"
+    "browserify": "latest",
+    "watchify": "latest",
+    "browserify-shim": "latest",
+    "http-server": "latest",
+    "uglifyify": "latest"
   }
 }

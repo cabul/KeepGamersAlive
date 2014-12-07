@@ -3,13 +3,18 @@ var gui = new Gui();
 var tween = require('tween');
 var pixi = require('pixi');
 var Keydoc = require('./keydoc');
+var Animation = require('./animation');
 
 var stage = new pixi.Stage(0x66ff44);
 var renderer,quit;
 
 module.exports = {
 
-assets: [],
+assets: [
+'img/background.png',
+'img/left_arm.png',
+'img/right_arm.png'
+],
 
 oninit: function(context) {
   renderer = context.renderer;
@@ -47,8 +52,6 @@ oninit: function(context) {
     left: 0,
     right: 0
   };
-
-  var Animation = require('./animation');
 
   var leftSheet = Animation.loadAll(leftArm,require('./animations/leftarm'));
   var rightSheet = Animation.loadAll(rightArm,require('./animations/rightarm'));
