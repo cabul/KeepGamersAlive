@@ -29,33 +29,34 @@ background.position.y = 0;
 stage.addChild(background);
 
 var leftArm = pixi.Sprite.fromImage('img/left_arm.png');
-var rightArm = pixi.Sprite.fromImage('img/right_arm.png');
-
-var rotation = {
-  degrees: 0
-};
+leftArm.anchor.x = 0.5;
+leftArm.anchor.y = 1;
 
 var armFolder = gui.addFolder('Left Arm');
-armFolder.add( leftArm.position,'x',-200,1000).name('Position X');
-armFolder.add( leftArm.position,'y',-200,800).name('Position Y');
-armFolder.add( rotation,'degrees',0,360).name('Rotation');
+armFolder.add(leftArm.position,'x',-200,1000).name('Position X');
+armFolder.add(leftArm.position,'y',-200,1000).name('Position Y');
+
+// var rightArm = pixi.Sprite.fromImage('img/right_arm.png');
 
 stage.addChild( leftArm );
 // container.addChild( leftArm );
 
-var AnimationHandler = require('./animationhandler');
+var Animation = require('./animation');
 
-var anim = new AnimationHandler(leftArm,require('./animations/leftarm'));
-anim.load('basic');
-anim.setFrame(0);
-anim.setCursor(1);
-anim.play();
+var anim = new Animation(leftArm,require('./animations/leftarm').basic);
+
+
+anim.build({
+  loop: true,
+  onframe: function(i){
+    console.log(i+' finished');
+  },
+  mode: Animation.Delta
+}).start();
 
 requestAnimFrame( function render(){
 
   requestAnimFrame(render);
-
-  leftArm.rotation = rotation.degrees * Math.PI / 180;
 
   renderer.render(stage);
   tween.update();

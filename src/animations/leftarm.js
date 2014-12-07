@@ -1,43 +1,29 @@
-var easing = require('tween').Easing;
-
 module.exports = {
   basic: [
   {
     position: {
-      x: 245,
-      y: 387
+      x: 220,
+      y: 670
     },
-    rotation: 34,
-    curve: easing.Cubic.InOut,
-    duration: 500
+    rotation: 20,
+    duration: 1000
   },
   {
     position: {
-      x: 250,
-      y: 387
+      x: 220,
+      y: 670
     },
-    rotation: 30,
-    curve: easing.Cubic.InOut,
-    duration: 500
-  },
-  {
-    delay: 100,
-    position: {
-      x: 240,
-      y: 380
-    },
-    rotation: 23,
-    curve: easing.Cubic.InOut,
-    duration: 500
+    rotation: 20,
+    duration: 1000
   },
   {
     position: {
-      x: 250,
-      y: 387
+      x: 200,
+      y: 640
     },
-    rotation: 30,
-    curve: easing.Cubic.InOut,
-    duration: 500
+    rotation: 40,
+    duration: 1000,
+    delay: 2000
   }
   ]
 };
