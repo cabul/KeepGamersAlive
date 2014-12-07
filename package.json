@@ -9,7 +9,7 @@
     "gui": "global:dat.GUI"
   },
   "browserify": {
-    "transform": [ "browserify-shim", "uglifyify" ],
+    "transform": [ "browserify-shim" ],
     "paths": ["./node_modules","./src"]
   },
   "watchify": {

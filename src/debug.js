@@ -1,2 +1,4 @@
 var Gui = require('gui');
-module.exports = new Gui(); 
+var gui = new Gui();
+module.exports = gui;
+gui.domElement.style.display = 'none';

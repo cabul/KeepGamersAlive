@@ -103,7 +103,6 @@ oninit: function(context) {
     }
   });
 
-
   stage.addChild( leftArm );
   stage.addChild( rightArm );
 
@@ -113,15 +112,10 @@ oninit: function(context) {
 
   var Console = require('./console');
 
-  var term = new Console({padding:4,lines:1,columns:16});
+  var term = new Console();
   term.position.x = 150;
-  term.position.y = 150;
-  var folder = gui.addFolder('Console');
-  folder.add(term.position,'x',-400,800).name('Position X');
-  folder.add(term.position,'y',-400,800).name('Position Y');
-
+  term.position.y = 530;
   stage.addChild(term);
-
 
 },
 onframe: function(time,dt){

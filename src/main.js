@@ -29,7 +29,6 @@ loadingScreen.addChild(loadingBar);
 
 loader.onProgress = function(){
   loadingBar.beginFill( 0xffffff * Math.random() );
-  console.log(loaded);
   loadingBar.drawRect(tile*loaded,0,tile,40);
   loadingBar.endFill();
   loaded += 1;
@@ -63,7 +62,7 @@ requestAnimFrame( function load(){
         running = false;
       }
     };
-  
+
     game.oninit(context);
 
     requestAnimFrame( function render(tick){
