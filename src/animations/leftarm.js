@@ -1,29 +1,39 @@
 module.exports = {
-  basic: [
+  typing: [
   {
     position: {
-      x: 220,
+      x: 240,
       y: 670
     },
-    rotation: 20,
-    duration: 1000
+    rotation: 12,
+    duration: 300
   },
   {
     position: {
-      x: 220,
-      y: 670
+      x: 260,
+      y: 650
     },
-    rotation: 20,
-    duration: 1000
-  },
-  {
-    position: {
-      x: 200,
-      y: 640
-    },
-    rotation: 40,
-    duration: 1000,
-    delay: 2000
+    rotation: 6,
+    duration: 300
   }
+  ],
+  rest: [
+  {
+    position: {
+      x: 250,
+      y: 670
+    },
+    rotation: 17,
+    duration: 700
+  },
+  {
+    position: {
+      x: 250,
+      y: 670
+    },
+    rotation: 17,
+    duration: 1000
+  },
+
   ]
 };

@@ -104,6 +104,21 @@ Animation.prototype = {
     sprite.position.x = frame.position.x;
     sprite.position.y = frame.position.y;
     sprite.rotation = frame.rotation * dtor;
+    return frame;
+  },
+  repeat: function(times){
+    var frames = [].concat(this.frames);
+    for(var i = 0; i < times; i += 1 ){
+      this.frames = this.frames.concat(frames);
+    }
+    return this;
+  },
+  chain: function(other){
+    this.frames = this.frames.concat(other.frames);
+    return this;
+  },
+  clone: function(){
+    return new Animation(this.sprite,[].concat(this.frames));
   }
 };
 
