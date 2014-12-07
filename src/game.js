@@ -1,5 +1,4 @@
-var Gui = require('gui');
-var gui = new Gui();
+var gui = require('./debug');
 var tween = require('tween');
 var pixi = require('pixi');
 var Keydoc = require('./keydoc');
@@ -104,13 +103,19 @@ oninit: function(context) {
     }
   });
 
-
   stage.addChild( leftArm );
   stage.addChild( rightArm );
 
-  Keydoc.addEventListener('q',function(){
+  Keydoc.addEventListener('escape',function(){
     quit();
   });
+
+  var Console = require('./console');
+
+  var term = new Console();
+  term.position.x = 150;
+  term.position.y = 530;
+  stage.addChild(term);
 
 },
 onframe: function(time,dt){

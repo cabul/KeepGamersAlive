@@ -13,6 +13,7 @@ var alias = {
   'alt'   : 18,
   'ctrl'  : 17,
   'shift' : 16,
+  'enter' : 13,
   'f1'  : 112,
   'f2'  : 113,
   'f3'  : 114,
@@ -33,12 +34,15 @@ var pressed = {};
 
 document.body.addEventListener('keyup',function(event){
   // event.preventDefault();
-  pressed[event.keyCode] = false;
+  var keyCode = event.keyCode || event.which;
+  pressed[keyCode] = false;
 },false);
 
 document.body.addEventListener('keydown',function(event){
   // event.preventDefault();
-  pressed[event.keyCode] = true;
+  console.log(event);
+  var keyCode = event.keyCode || event.which;
+  pressed[keyCode] = true;
   Object.keys(listeners).forEach(function(keys){
     var i,len;
     var arr = keys.split('+');
@@ -51,12 +55,8 @@ document.body.addEventListener('keydown',function(event){
     }
     var prop = true;
     arr = listeners[keys];
-    evt = {
-      stopPropagation: function(){ prop = false; },
-      type: keys
-    };
     for( i = 0, len = arr.length; i < len && prop; i += 1 ) {
-      arr[i].call(null,evt);
+      arr[i].call(null,event);
     }
   });
 },false);
